@@ -1,6 +1,7 @@
 # app.py — Run with: streamlit run app.py
 
 import streamlit as st
+import os, gdown
 import torch
 import torch.nn as nn
 import numpy as np
@@ -393,6 +394,13 @@ device      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 @st.cache_resource
 def load_model():
+    if not os.path.exists("best_model.pth"):
+        with st.spinner("⬇️ Downloading model weights..."):
+            gdown.download(
+                "https://drive.google.com/uc?id=10DWSq-00Q1zV6vCPWqHy-_Ni4--GEw8C",
+                "best_model.pth",
+                quiet=False
+            )
     m = models.efficientnet_b3(weights=None)
     num_features = m.classifier[1].in_features
     m.classifier = nn.Sequential(nn.Dropout(p=0.3), nn.Linear(num_features, 2))
