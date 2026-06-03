@@ -396,9 +396,10 @@ def load_model():
     if not os.path.exists("best_model.pth"):
         with st.spinner("⬇️ Downloading model weights..."):
             gdown.download(
-                "https://drive.google.com/uc?id=10DWSq-00Q1zV6vCPWqHy-_Ni4--GEw8C",
-                "best_model.pth",
-                quiet=False
+                id="10DWSq-00Q1zV6vCPWqHy-_Ni4--GEw8C",
+                output="best_model.pth",
+                quiet=False,
+                fuzzy=True
             )
     m = models.efficientnet_b3(weights=None)
     num_features = m.classifier[1].in_features
