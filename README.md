@@ -8,7 +8,7 @@ An end-to-end deep learning system that detects **pneumonia** from chest X-rays
 using EfficientNetB3 with **Grad-CAM explainability**.
 
 ## 🌐 Live Demo
-👉 [Try PneumoScan AI Live]((https://pneumoscan-ai-ljkf8rt3a7vsfpkmd8pxqi.streamlit.app/))
+👉 [Try PneumoScan AI Live](https://pneumoscan-ai-ljkf8rt3a7vsfpkmd8pxqi.streamlit.app/)
 
 ## 🎯 Results
 | Metric | Score |
