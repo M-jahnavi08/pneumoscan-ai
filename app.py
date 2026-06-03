@@ -395,12 +395,8 @@ device      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def load_model():
     if not os.path.exists("best_model.pth"):
         with st.spinner("⬇️ Downloading model weights..."):
-            gdown.download(
-                id="10DWSq-00Q1zV6vCPWqHy-_Ni4--GEw8C",
-                output="best_model.pth",
-                quiet=False,
-                fuzzy=True
-            )
+            url = "https://drive.google.com/uc?export=download&id=10DWSq-00Q1zV6vCPWqHy-_Ni4--GEw8C"
+            gdown.download(url, "best_model.pth", quiet=False, fuzzy=True)
     m = models.efficientnet_b3(weights=None)
     num_features = m.classifier[1].in_features
     m.classifier = nn.Sequential(nn.Dropout(p=0.3), nn.Linear(num_features, 2))
