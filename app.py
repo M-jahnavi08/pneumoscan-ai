@@ -64,16 +64,38 @@ hr{border:none!important;border-top:1px solid var(--border)!important;margin:1.5
 # ── Model download using requests ─────────────────────────────────────────────
 def download_model():
     file_id = "10DWSq-00Q1zV6vCPWqHy-_Ni4--GEw8C"
-    url = f"https://drive.google.com/uc?export=download&id={file_id}"
     session = requests.Session()
-    response = session.get(url, stream=True)
+
+    # Step 1: Get confirmation token
+    response = session.get(
+        "https://drive.google.com/uc",
+        params={"export": "download", "id": file_id},
+        stream=True
+    )
+
+    # Step 2: Find confirmation token in cookies or response
     token = None
     for key, value in response.cookies.items():
         if key.startswith("download_warning"):
             token = value
+            break
+
+    # Step 3: If token found, re-request with confirmation
     if token:
-        url = f"https://drive.google.com/uc?export=download&confirm={token}&id={file_id}"
-        response = session.get(url, stream=True)
+        response = session.get(
+            "https://drive.google.com/uc",
+            params={"export": "download", "id": file_id, "confirm": token},
+            stream=True
+        )
+    else:
+        # Try new Google Drive download URL format
+        response = session.get(
+            f"https://drive.usercontent.google.com/download",
+            params={"id": file_id, "export": "download", "confirm": "t"},
+            stream=True
+        )
+
+    # Step 4: Save file
     with open("best_model.pth", "wb") as f:
         for chunk in response.iter_content(chunk_size=32768):
             if chunk:
